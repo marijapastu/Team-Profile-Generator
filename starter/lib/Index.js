@@ -9,7 +9,7 @@ const render = require('../src/page-template');
 const team = [];
 
 
-const teamManager = [
+const teamManager = inquirer.prompt([
     
     {
         type: 'input',
@@ -32,10 +32,9 @@ const teamManager = [
         message: 'Please add team managers office number'
     },
 
-]
+]);
 
 const newManager = new Manager(teamManager.manName, teamManager.manId, teamManager.manEmail, teamManager.officeNum);
-console.log(newManager);
 team.push(newManager);
 
 const choice = {
@@ -44,6 +43,8 @@ const choice = {
     message: 'Please slect one of the options',
     choices: ['Add an engineer', 'Add an intern', 'Finish building the team']
 }
+
+
 
 const teamEngineer = [
     
