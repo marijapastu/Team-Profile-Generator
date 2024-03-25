@@ -3,13 +3,15 @@ const Engineer = require('./Engineer');
 const Intern = require('./Intern');
 const Manager = require('./Manager');
 const fs = require('fs');
-const render = require('../src/page-template');
+const generateNewTeam = require('../src/page-template');
 
 
-const team = [];
+const newTeam = [];
 
-
-const teamManager = inquirer.prompt([
+// creating Managers object
+const teamManager = () => {
+    
+    inquirer.prompt([
     
     {
         type: 'input',
@@ -32,21 +34,47 @@ const teamManager = inquirer.prompt([
         message: 'Please add team managers office number'
     },
 
-]);
+]).then(response1 => {
 
-const newManager = new Manager(teamManager.manName, teamManager.manId, teamManager.manEmail, teamManager.officeNum);
-team.push(newManager);
+// pushing Mangers data into teams array
 
-const choice = {
+    const newManager = new Manager(response1.manName, response1.manId, response1.manEmail, response1.officeNum);
+    newTeam.push(newManager);
+    choice();
+
+})
+
+};
+
+teamManager();
+
+// prompting the user to chose the action
+
+const choice = () => {
+
+    inquirer.prompt([
+    {
     type: 'list',
     name: 'options',
     message: 'Please slect one of the options',
     choices: ['Add an engineer', 'Add an intern', 'Finish building the team']
-}
+    }
+
+]).then(response2 => {
+    if (response2 === 'Add an engineer'){
+        teamEngineer();
+    }  else if (response2 === 'Add an intern'){
+        teamIntern();
+    } else {
+        createTeam();
+    }
+
+})
+};
 
 
-
-const teamEngineer = [
+const teamEngineer = () => {
+    inquirer.prompt([
     
     {
         type: 'input',
@@ -67,14 +95,20 @@ const teamEngineer = [
         type: 'input',
         name: 'engGitHub',
         message: 'Please add engineers Github username'
-    },
+    }
 
-]
+]).then(response3 => {
+    const newEngineer = new Engineer(response3.engName, response3.engId, response3.engEmail, response3.engGitHub);
+    newTeam.push(newEngineer);
+    choice();
 
-const newEngineer = new Engineer(teamEngineer.engName, teamEngineer.engId, teamEngineer.engEmail, teamEngineer.engGitHub);
-team.push(newEngineer);
+})
 
-const teamIntern = [
+};
+
+
+const teamIntern = () => {
+    inquirer.prompt([
     
     {
         type: 'input',
@@ -97,7 +131,18 @@ const teamIntern = [
         message: 'Please add intern school'
     },
 
-]
+]).then(response4 => {
+    const newIntern = new Intern (response4.intName, response4.intId, response4.intEmail, response4.intSchool);
+    newTeam.push(newIntern);
+    choice();
+})
 
-const newIntern = new Intern (teamIntern.intName, teamIntern.intId, teamIntern.intEmail, teamIntern.intSchool);
-team.push(newIntern);
+}
+
+
+const createTeam = () => {
+    fs.writeToFile('index.html', generateNewTeam(newTeam), (err) => {
+        err ? console.error(err)
+        : console.log('The file has been created');
+    });
+}
