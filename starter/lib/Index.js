@@ -8,6 +8,7 @@ const generateNewTeam = require('../src/page-template');
 
 const newTeam = [];
 
+
 // creating Managers object
 const teamManager = () => {
     
@@ -43,10 +44,8 @@ const teamManager = () => {
     choice();
 
 })
+}
 
-};
-
-teamManager();
 
 // prompting the user to chose the action
 
@@ -61,16 +60,18 @@ const choice = () => {
     }
 
 ]).then(response2 => {
-    if (response2 === 'Add an engineer'){
+    if (response2.options === 'Add an engineer'){
         teamEngineer();
-    }  else if (response2 === 'Add an intern'){
+    }  else if (response2.options === 'Add an intern'){
         teamIntern();
     } else {
         createTeam();
     }
 
-})
+});
+
 };
+
 
 
 const teamEngineer = () => {
@@ -141,8 +142,7 @@ const teamIntern = () => {
 
 
 const createTeam = () => {
-    fs.writeToFile('index.html', generateNewTeam(newTeam), (err) => {
-        err ? console.error(err)
-        : console.log('The file has been created');
-    });
+    fs.writeToFileSync('index.html', generateNewTeam(newTeam));
 }
+
+teamManager();
