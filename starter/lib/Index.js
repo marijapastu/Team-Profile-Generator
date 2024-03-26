@@ -141,8 +141,25 @@ const teamIntern = () => {
 }
 
 
-const createTeam = () => {
-    fs.writeToFileSync('index.html', generateNewTeam(newTeam));
+// const createTeam = () => {
+//     fs.writeToFileSync('index.html', generateNewTeam(newTeam));
+// }
+
+// function to write README file
+function writeToFile(fileName, data) {
+    fs.writeFile(fileName, data, (err) => {
+        err ? console.error(err)
+        : console.log('Success');
+    })
+    
 }
+
+// function to initialize program
+function createTeam() { 
+    writeToFile('../output/index.html', generateNewTeam(newTeam));
+       
+}
+
+// function call to initialize program
 
 teamManager();
