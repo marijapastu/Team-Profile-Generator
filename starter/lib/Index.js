@@ -3,7 +3,7 @@ const Engineer = require('./Engineer');
 const Intern = require('./Intern');
 const Manager = require('./Manager');
 const fs = require('fs');
-const generateNewTeam = require('../src/page-template');
+const render = require('../src/page-template');
 
 
 const newTeam = [];
@@ -37,7 +37,7 @@ const teamManager = () => {
 
 ]).then(response1 => {
 
-// pushing Mangers data into teams array
+// pushing Managers data into teams array
 
     const newManager = new Manager(response1.manName, response1.manId, response1.manEmail, response1.officeNum);
     newTeam.push(newManager);
@@ -73,6 +73,7 @@ const choice = () => {
 };
 
 
+//  create Engineer object
 
 const teamEngineer = () => {
     inquirer.prompt([
@@ -107,7 +108,7 @@ const teamEngineer = () => {
 
 };
 
-
+// create Intern object
 const teamIntern = () => {
     inquirer.prompt([
     
@@ -141,10 +142,6 @@ const teamIntern = () => {
 }
 
 
-// const createTeam = () => {
-//     fs.writeToFileSync('index.html', generateNewTeam(newTeam));
-// }
-
 // function to write README file
 function writeToFile(fileName, data) {
     fs.writeFile(fileName, data, (err) => {
@@ -156,7 +153,7 @@ function writeToFile(fileName, data) {
 
 // function to initialize program
 function createTeam() { 
-    writeToFile('../output/index.html', generateNewTeam(newTeam));
+    writeToFile('../output/team.html', render(newTeam));
        
 }
 
